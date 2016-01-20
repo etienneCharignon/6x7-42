@@ -1,0 +1,14 @@
+.operation {
+  margin:0;
+  text-align:center;
+  font-size: 10rem;
+  width: 100%;
+  position:absolute;
+  top:50%;
+  left:5%;
+}
+
+.repetition {
+  font-size: 3rem;
+  display: inline-block;
+}
