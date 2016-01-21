@@ -24,12 +24,12 @@ function boucle(e) {
   repetition += 1;
   ecritOperationSur(ardoise, multiplicateur);
   if(repetition < 20) {
-    window.onclick=boucle;
+    document.getElementById('ardoise').onclick=boucle;
     window.onkeypress=undefined;
     apprendre(document.getElementById('ardoise'));
   }
   else {
-    window.onclick=undefined;
+    document.getElementById('ardoise').onclick=undefined;
     window.onkeypress=boucle;
     if(e.keyCode)
       controle(e);
