@@ -20,10 +20,15 @@ function deplace(ardoise) {
   }
 }
 
+function centre(ardoise) {
+  ardoise.style.top = '40%';
+}
+
 function boucle(e) {
   repetition += 1;
 
   var ardoise = document.getElementById('ardoise');
+  centre(ardoise)
   ecritOperationSur(ardoise, multiplicateur);
   if(repetition < 20) {
     ardoise.onclick=boucle;
@@ -36,6 +41,8 @@ function boucle(e) {
     if(e.keyCode) {
       if(e.keyCode == 13) {
         controle();
+        proposition="";
+        ecritOperationSur(ardoise, multiplicateur);
       }
       else {
         repetition -= 1;
@@ -62,5 +69,4 @@ function controle() {
   else {
     repetition -= 1;
   }
-  proposition="";
 }
