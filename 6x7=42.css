@@ -1,10 +1,23 @@
-.operation {
+body {
+  font-family: sans-serif
+}
+
+.ardoise {
   margin:0;
   text-align:center;
   font-size: 10rem;
   width: 100%;
   position:absolute;
   left:5%;
+}
+
+.operation {
+  display:inline-block;
+}
+
+.resultat {
+  color:red;
+  display:inline-block;
 }
 
 .repetition {

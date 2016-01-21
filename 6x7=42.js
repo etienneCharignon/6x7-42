@@ -6,12 +6,13 @@ function operationSuivante() {
   multiplicateur = Math.ceil(Math.random()*10);
 }
 
-function ecritOperationSur(ardoise, multiplicateur) {
-  ardoise.textContent= table + "x" + multiplicateur + "=";
+function ecritOperationSurArdoise(multiplicateur) {
+  document.getElementById('operation').textContent= table + "x" + multiplicateur + "=";
+  document.getElementById('resultat').textContent= "";
 }
 
-function ecritResultatSur(ardoise, resultat){
-  ardoise.textContent=  ardoise.textContent + resultat;
+function ecritResultatSurArdoise(resultat){
+  document.getElementById('resultat').textContent=  resultat;
 }
 
 function deplace(ardoise) {
@@ -29,7 +30,7 @@ function boucle(e) {
 
   var ardoise = document.getElementById('ardoise');
   centre(ardoise)
-  ecritOperationSur(ardoise, multiplicateur);
+  ecritOperationSurArdoise(multiplicateur);
   if(repetition < 20) {
     ardoise.onclick=boucle;
     window.onkeypress=undefined;
@@ -42,12 +43,12 @@ function boucle(e) {
       if(e.keyCode == 13) {
         controle();
         proposition="";
-        ecritOperationSur(ardoise, multiplicateur);
+        ecritOperationSurArdoise(multiplicateur);
       }
       else {
         repetition -= 1;
         proposition += e.keyCode - 48;
-        ecritResultatSur(ardoise, proposition);
+        ecritResultatSurArdoise(proposition);
       }
     }
   }
@@ -55,7 +56,7 @@ function boucle(e) {
 }
 
 function apprendre(ardoise) {
-  ecritResultatSur(ardoise, table * multiplicateur);
+  ecritResultatSurArdoise(table * multiplicateur);
   deplace(ardoise);
   operationSuivante();
 }
