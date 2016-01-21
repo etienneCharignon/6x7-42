@@ -22,17 +22,27 @@ function deplace(ardoise) {
 
 function boucle(e) {
   repetition += 1;
+
+  var ardoise = document.getElementById('ardoise');
   ecritOperationSur(ardoise, multiplicateur);
   if(repetition < 20) {
-    document.getElementById('ardoise').onclick=boucle;
+    ardoise.onclick=boucle;
     window.onkeypress=undefined;
-    apprendre(document.getElementById('ardoise'));
+    apprendre(ardoise);
   }
   else {
-    document.getElementById('ardoise').onclick=undefined;
+    ardoise.onclick=undefined;
     window.onkeypress=boucle;
-    if(e.keyCode)
-      controle(e);
+    if(e.keyCode) {
+      if(e.keyCode == 13) {
+        controle();
+      }
+      else {
+        repetition -= 1;
+        proposition += e.keyCode - 48;
+        ecritResultatSur(ardoise, proposition);
+      }
+    }
   }
   document.getElementById('repetition').textContent = repetition;
 }
@@ -45,18 +55,12 @@ function apprendre(ardoise) {
 
 var proposition = "";
 
-function controle(e) {
-  var ardoise = document.getElementById('ardoise');
-  if(e.keyCode == 13) {
-    if(proposition == multiplicateur * table) {
-      operationSuivante();
-      ecritOperationSur(ardoise, multiplicateur);
-    }
-    else {
-    }
-    proposition="";
-    return;
+function controle() {
+  if(proposition == multiplicateur * table) {
+    operationSuivante();
   }
-  proposition += e.keyCode - 48;
-  ecritResultatSur(ardoise, proposition);
+  else {
+    repetition -= 1;
+  }
+  proposition="";
 }
