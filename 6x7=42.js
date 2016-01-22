@@ -1,23 +1,30 @@
-var repetition = 0;
+var score = 0;
 var table = 7;
 var multiplicateur = 1;
+var proposition = "";
 
 function operationSuivante() {
-  multiplicateur = Math.ceil(Math.random()*10);
+  var multiplicateurCourant = multiplicateur;
+  while(multiplicateur == multiplicateurCourant) {
+    multiplicateur = Math.ceil(Math.random()*10);
+  }
 }
 
 function ecritOperationSurArdoise(multiplicateur) {
-  document.getElementById('operation').textContent= table + "x" + multiplicateur + "=";
-  document.getElementById('resultat').textContent= "";
+  $('#operation').text(table + "x" + multiplicateur + "=");
+  $('#resultat').text("");
 }
 
 function ecritResultatSurArdoise(resultat){
-  document.getElementById('resultat').textContent=  resultat;
+  $('#resultat').text(resultat);
 }
 
 function deplace(ardoise) {
-  if(repetition > 10) {
-    ardoise.style.top = Math.random() * 80 + "%";
+  if(score > 9) {
+    var anciennePosition = ardoise.style.top;
+    while(ardoise.style.top == anciennePosition) {
+      ardoise.style.top = Math.random() * 80 + "%";
+    }
   }
 }
 
@@ -25,20 +32,30 @@ function centre(ardoise) {
   ardoise.style.top = '40%';
 }
 
+function pourcentage(score) {
+  return 1.0 / 30 * (30 - score);
+}
+
+function afficheScore() {
+  $('#tableau').css('background-color', "rgba(255, 255, 255, "+ pourcentage(score) +")");
+  $('#score').text(score);
+}
+
 function boucle(e) {
-  repetition += 1;
 
   var ardoise = document.getElementById('ardoise');
   centre(ardoise)
   ecritOperationSurArdoise(multiplicateur);
-  if(repetition < 20) {
+  if(score < 20) {
     ardoise.onclick=boucle;
     window.onkeypress=undefined;
     apprendre(ardoise);
+    score += 1;
   }
   else {
     ardoise.onclick=undefined;
     window.onkeypress=boucle;
+    $('#resultat').css('color', "black");
     if(e.keyCode) {
       if(e.keyCode == 13) {
         controle();
@@ -46,13 +63,12 @@ function boucle(e) {
         ecritOperationSurArdoise(multiplicateur);
       }
       else {
-        repetition -= 1;
         proposition += e.keyCode - 48;
         ecritResultatSurArdoise(proposition);
       }
     }
   }
-  document.getElementById('repetition').textContent = repetition;
+  afficheScore();
 }
 
 function apprendre(ardoise) {
@@ -61,13 +77,9 @@ function apprendre(ardoise) {
   operationSuivante();
 }
 
-var proposition = "";
-
 function controle() {
   if(proposition == multiplicateur * table) {
     operationSuivante();
-  }
-  else {
-    repetition -= 1;
+    score += 1;
   }
 }

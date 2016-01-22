@@ -1,5 +1,15 @@
 body {
-  font-family: sans-serif
+  font-family: sans-serif;
+  background-color: red;
+  padding:0;
+  margin:0;
+}
+
+#tableau {
+  height:100%;
+  width:100%;
+  padding:0;
+  margin:0;
 }
 
 .ardoise {
@@ -20,7 +30,6 @@ body {
   display:inline-block;
 }
 
-.repetition {
-  font-size: 3rem;
+.score {
   display: inline-block;
 }

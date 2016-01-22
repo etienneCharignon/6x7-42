@@ -1,0 +1,4 @@
+src_files:
+ - "bower_components/jquery/dist/jquery.js"
+ - "spec.js"
+ - "6x7=42.js"
