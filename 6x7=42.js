@@ -21,15 +21,15 @@ function ecritResultatSurArdoise(resultat){
 
 function deplace(ardoise) {
   if(score > 9) {
-    var anciennePosition = ardoise.style.top;
-    while(ardoise.style.top == anciennePosition) {
-      ardoise.style.top = Math.random() * 80 + "%";
+    var anciennePosition = ardoise.css('top');
+    while(ardoise.css('top') == anciennePosition) {
+      ardoise.css('top', Math.random() * 80 + "%");
     }
   }
 }
 
-function centre(ardoise) {
-  ardoise.style.top = '40%';
+function centre($ardoise) {
+  $ardoise.css('top', '40%');
 }
 
 function pourcentage(score) {
@@ -43,17 +43,18 @@ function afficheScore() {
 
 function boucle(e) {
 
-  var ardoise = document.getElementById('ardoise');
+  var ardoise = $('#ardoise');
   centre(ardoise)
+  ardoise.unbind("click");
+  window.onkeypress=undefined;
+
   ecritOperationSurArdoise(multiplicateur);
   if(score < 20) {
-    ardoise.onclick=boucle;
-    window.onkeypress=undefined;
+    ardoise.on("click", boucle);
     apprendre(ardoise);
     score += 1;
   }
   else {
-    ardoise.onclick=undefined;
     window.onkeypress=boucle;
     $('#resultat').css('color', "black");
     if(e.keyCode) {
