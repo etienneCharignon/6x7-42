@@ -44,10 +44,10 @@ function afficheScore() {
 function boucle(e) {
 
   var ardoise = $('#ardoise');
-  centre(ardoise)
   ardoise.unbind("click");
   window.onkeypress=undefined;
 
+  centre(ardoise)
   ecritOperationSurArdoise(multiplicateur);
   if(score < 20) {
     ardoise.on("click", boucle);

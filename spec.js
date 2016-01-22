@@ -9,6 +9,18 @@ describe('controle', function(){
     expect(score).toBe(2);
     expect(multiplicateur).not.toBe(1);
   });
+  it("Devrait afficher le resultat tapé après le score 20", function() {
+    score=19;
+    proposition = "";
+    multiplicateur = 1;
+
+    boucle({keyCode : 55});
+    expect(proposition).toBe("7");
+    expect(score).toBe(19);
+    boucle({keyCode : 13});
+    expect(proposition).toBe("");
+    expect(score).toBe(20);
+  });
 });
 
 describe('apprendre', function() {
@@ -25,6 +37,7 @@ describe('apprendre', function() {
     boucle();
     expect(ardoise.css('top')).not.toBe('40%');
   });
+
 });
 
 describe('score', function() {
