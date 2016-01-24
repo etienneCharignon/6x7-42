@@ -14,11 +14,13 @@ body {
 
 .ardoise {
   margin:0;
+  padding:0 1rem 0 1rem;
+  border-radius: 0.1em 0.1em;
   text-align:center;
   font-size: 10rem;
-  width: 100%;
   position:absolute;
-  left:5%;
+  left:25%;
+  background-color:#FFFFFF;
 }
 
 .operation {
