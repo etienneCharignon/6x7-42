@@ -4,6 +4,29 @@ var multiplicateur = 1;
 var proposition = "";
 var audio;
 
+var keyNumberMap = {};
+keyNumberMap[224] = 0;
+keyNumberMap[38] = 1;
+keyNumberMap[233] = 2;
+keyNumberMap[34] = 3;
+keyNumberMap[39] = 4;
+keyNumberMap[40] = 5;
+keyNumberMap[167] = 6;
+keyNumberMap[232] = 7;
+keyNumberMap[33] = 8;
+keyNumberMap[231] = 9;
+
+keyNumberMap[48] = 0;
+keyNumberMap[49] = 1;
+keyNumberMap[50] = 2;
+keyNumberMap[51] = 3;
+keyNumberMap[52] = 4;
+keyNumberMap[53] = 5;
+keyNumberMap[54] = 6;
+keyNumberMap[55] = 7;
+keyNumberMap[56] = 8;
+keyNumberMap[57] = 9;
+
 function operationSuivante() {
   var multiplicateurCourant = multiplicateur;
   while(multiplicateur == multiplicateurCourant) {
@@ -50,6 +73,7 @@ function lireArdoise(e) {
   document.getElementById('audio').play();
 }
 
+
 function boucle(e) {
 
   var ardoise = $('#ardoise');
@@ -67,14 +91,13 @@ function boucle(e) {
     window.onkeypress=boucle;
     $('#resultat').css('color', "black");
     if(e.keyCode) {
-      if(e.keyCode == 13) {
-        controle();
-        proposition="";
-        ecritOperationSurArdoise(multiplicateur);
-      }
-      else {
-        proposition += e.keyCode - 48;
+      if(e.keyCode in keyNumberMap) {
+        proposition += keyNumberMap[e.keyCode];
         ecritResultatSurArdoise(proposition);
+        if(controle() || proposition.length >= 2) {
+          proposition="";
+          ecritOperationSurArdoise(multiplicateur);
+        }
       }
     }
   }
@@ -92,5 +115,7 @@ function controle() {
   if(proposition == multiplicateur * table) {
     operationSuivante();
     score += 1;
+    return true;
   }
+  return false;
 }
