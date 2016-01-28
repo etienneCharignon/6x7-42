@@ -2,6 +2,7 @@ var score = 0;
 var table = 7;
 var multiplicateur = 1;
 var proposition = "";
+var audio;
 
 function operationSuivante() {
   var multiplicateurCourant = multiplicateur;
@@ -41,6 +42,14 @@ function afficheScore() {
   $('#score').text(score);
 }
 
+function lireArdoise(e) {
+  $("#audio").unbind("ended");
+  $("#audio").bind('ended', function() {
+    boucle(e);
+  });
+  document.getElementById('audio').play();
+}
+
 function boucle(e) {
 
   var ardoise = $('#ardoise');
@@ -50,7 +59,7 @@ function boucle(e) {
   centre(ardoise)
   ecritOperationSurArdoise(multiplicateur);
   if(score < 20) {
-    ardoise.on("click", boucle);
+    ardoise.on("click", lireArdoise);
     apprendre(ardoise);
     score += 1;
   }
@@ -75,6 +84,7 @@ function boucle(e) {
 function apprendre(ardoise) {
   ecritResultatSurArdoise(table * multiplicateur);
   deplace(ardoise);
+  $("#audio").attr('src', multiplicateur + '.mp3');
   operationSuivante();
 }
 
