@@ -28,6 +28,7 @@ keyNumberMap[56] = 8;
 keyNumberMap[57] = 9;
 
 function operationSuivante() {
+  $("#audio").attr('src', multiplicateur + '.mp3');
   var multiplicateurCourant = multiplicateur;
   while(multiplicateur == multiplicateurCourant) {
     multiplicateur = Math.ceil(Math.random()*10);
@@ -65,11 +66,10 @@ function afficheScore() {
   $('#score').text(score);
 }
 
-function lireArdoise(e) {
-  $("#audio").unbind("ended");
-  $("#audio").bind('ended', function() {
-    boucle(e);
-  });
+function lireArdoise(cb) {
+  var audio = $("#audio");
+  audio.unbind("ended");
+  audio.bind('ended', cb);
   document.getElementById('audio').play();
 }
 
@@ -83,7 +83,9 @@ function boucle(e) {
   centre(ardoise)
   ecritOperationSurArdoise(multiplicateur);
   if(score < 20) {
-    ardoise.on("click", lireArdoise);
+    ardoise.on("click", function(e) {
+        lireArdoise(function() { boucle(e); });
+    });
     apprendre(ardoise);
     score += 1;
   }
@@ -94,9 +96,19 @@ function boucle(e) {
       if(e.keyCode in keyNumberMap) {
         proposition += keyNumberMap[e.keyCode];
         ecritResultatSurArdoise(proposition);
-        if(controle() || proposition.length >= 2) {
-          proposition="";
-          ecritOperationSurArdoise(multiplicateur);
+        var cEstBon = controle();
+        if(cEstBon || proposition.length >= 2) {
+          if(cEstBon){
+            operationSuivante();
+            score += 1;
+            lireArdoise(function() {
+              proposition="";
+              ecritOperationSurArdoise(multiplicateur);
+            });
+          }
+          else {
+              proposition="";
+          }
         }
       }
     }
@@ -107,15 +119,9 @@ function boucle(e) {
 function apprendre(ardoise) {
   ecritResultatSurArdoise(table * multiplicateur);
   deplace(ardoise);
-  $("#audio").attr('src', multiplicateur + '.mp3');
   operationSuivante();
 }
 
 function controle() {
-  if(proposition == multiplicateur * table) {
-    operationSuivante();
-    score += 1;
-    return true;
-  }
-  return false;
+  return proposition == multiplicateur * table;
 }
