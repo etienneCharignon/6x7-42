@@ -4,28 +4,18 @@ var multiplicateur = 1;
 var proposition = "";
 var audio;
 
-var keyNumberMap = {};
-keyNumberMap[224] = 0;
-keyNumberMap[38] = 1;
-keyNumberMap[233] = 2;
-keyNumberMap[34] = 3;
-keyNumberMap[39] = 4;
-keyNumberMap[40] = 5;
-keyNumberMap[167] = 6;
-keyNumberMap[232] = 7;
-keyNumberMap[33] = 8;
-keyNumberMap[231] = 9;
-
-keyNumberMap[48] = 0;
-keyNumberMap[49] = 1;
-keyNumberMap[50] = 2;
-keyNumberMap[51] = 3;
-keyNumberMap[52] = 4;
-keyNumberMap[53] = 5;
-keyNumberMap[54] = 6;
-keyNumberMap[55] = 7;
-keyNumberMap[56] = 8;
-keyNumberMap[57] = 9;
+var keyNumberMap = {
+  224:0, 48: 0,
+  38: 1, 49: 1,
+  233:2, 50: 2,
+  34: 3, 51: 3,
+  39: 4, 52: 4,
+  40: 5, 53: 5,
+  167:6, 54: 6,
+  232:7, 55: 7,
+  33: 8, 56: 8,
+  231:9, 57: 9
+};
 
 $(document).ready(function() {
   $('#score').on('click', function() {
