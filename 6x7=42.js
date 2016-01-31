@@ -27,8 +27,19 @@ keyNumberMap[55] = 7;
 keyNumberMap[56] = 8;
 keyNumberMap[57] = 9;
 
+$(document).ready(function() {
+  $('#score').on('click', function() {
+    score = 20;
+    boucle({keyCode:999});
+  });
+  $('#ardoise').on('click', function(e) {
+      litArdoise(function() { boucle(e); });
+  });
+  window.onkeypress=boucle;
+  init();
+});
+
 function operationSuivante() {
-  $("#audio").attr('src', multiplicateur + '.mp3');
   var multiplicateurCourant = multiplicateur;
   while(multiplicateur == multiplicateurCourant) {
     multiplicateur = Math.ceil(Math.random()*10);
@@ -41,6 +52,7 @@ function ecritOperationSurArdoise(multiplicateur) {
 }
 
 function ecritResultatSurArdoise(resultat){
+  $("#audio").attr('src', multiplicateur + '.mp3');
   $('#resultat').text(resultat);
 }
 
@@ -61,67 +73,78 @@ function pourcentage(score) {
   return 1.0 / 30 * (30 - score);
 }
 
-function afficheScore() {
+function ecritScore() {
   $('#tableau').css('background-color', "rgba(255, 255, 255, "+ pourcentage(score) +")");
   $('#score').text(score);
 }
 
-function lireArdoise(cb) {
+function litArdoise(cb) {
   var audio = $("#audio");
-  audio.unbind("ended");
-  audio.bind('ended', cb);
+  audio.unbind('ended');
+  audio.bind('ended', function() {
+    operationSuivante();
+    score += 1;
+    cb();
+    ecritScore();
+  });
   document.getElementById('audio').play();
 }
 
+function litClavier(e) {
+  if(e && e.keyCode) {
+    if(e.keyCode in keyNumberMap) {
+      proposition += keyNumberMap[e.keyCode];
+    }
+  }
+}
+
+function init() {
+  var ardoise = $('#ardoise');
+  centre(ardoise)
+  ecritOperationSurArdoise(multiplicateur);
+  ecritResultatSurArdoise(table * multiplicateur);
+  ecritScore();
+}
 
 function boucle(e) {
 
   var ardoise = $('#ardoise');
-  ardoise.unbind("click");
-  window.onkeypress=undefined;
 
   centre(ardoise)
   ecritOperationSurArdoise(multiplicateur);
+
   if(score < 20) {
-    ardoise.on("click", function(e) {
-        lireArdoise(function() { boucle(e); });
-    });
-    apprendre(ardoise);
-    score += 1;
-  }
-  else {
-    window.onkeypress=boucle;
-    $('#resultat').css('color', "black");
-    if(e.keyCode) {
-      if(e.keyCode in keyNumberMap) {
-        proposition += keyNumberMap[e.keyCode];
-        ecritResultatSurArdoise(proposition);
-        var cEstBon = controle();
-        if(cEstBon || proposition.length >= 2) {
-          if(cEstBon){
-            operationSuivante();
-            score += 1;
-            lireArdoise(function() {
-              proposition="";
-              ecritOperationSurArdoise(multiplicateur);
-            });
-          }
-          else {
-              proposition="";
-          }
-        }
-      }
+    ecritResultatSurArdoise(table * multiplicateur);
+    deplace(ardoise);
+    litClavier(e);
+    if(!(table*multiplicateur).toString().startsWith(proposition)) {
+      proposition = "";
     }
   }
-  afficheScore();
-}
-
-function apprendre(ardoise) {
-  ecritResultatSurArdoise(table * multiplicateur);
-  deplace(ardoise);
-  operationSuivante();
+  else {
+    $('#resultat').css('color', "black");
+    ardoise.unbind('click');
+    litClavier(e);
+    ecritResultatSurArdoise(proposition);
+  }
+  controle();
 }
 
 function controle() {
+  var cEstBon = verifiResultat();
+  if(cEstBon || proposition.length >= 2) {
+    if(cEstBon){
+      litArdoise(function() {
+        proposition="";
+        boucle();
+      });
+    }
+    else {
+        proposition="";
+    }
+  }
+}
+
+function verifiResultat() {
   return proposition == multiplicateur * table;
 }
