@@ -17,16 +17,24 @@ var keyNumberMap = {
   231:9, 57: 9
 };
 
-$(document).ready(function() {
+$(document).on('ready', function() {
+
+  window.onkeypress=boucle;
+
   $('#score').on('click', function() {
     score = 20;
     boucle({keyCode:999});
   });
-  $('#ardoise').on('click', function(e) {
+
+  var $ardoise = $('#ardoise');
+  $ardoise.on('click', function(e) {
       litArdoise(function() { boucle(e); });
   });
-  window.onkeypress=boucle;
-  init();
+  centre($ardoise)
+  ecritOperationSurArdoise(multiplicateur);
+  ecritResultatSurArdoise(table * multiplicateur);
+
+  ecritScore();
 });
 
 function operationSuivante() {
@@ -86,14 +94,6 @@ function litClavier(e) {
       proposition += keyNumberMap[e.keyCode];
     }
   }
-}
-
-function init() {
-  var ardoise = $('#ardoise');
-  centre(ardoise)
-  ecritOperationSurArdoise(multiplicateur);
-  ecritResultatSurArdoise(table * multiplicateur);
-  ecritScore();
 }
 
 function boucle(e) {
