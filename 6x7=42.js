@@ -23,13 +23,13 @@ $(document).on('ready', function() {
 
   $('#score').on('click', function() {
     score = 20;
-    boucle();
+    passeALOperationSuivante();
   });
 
   var $ardoise = $('#ardoise');
   $ardoise.on('click', cEstBon);
 
-  $('#audio').bind('ended', finLectureArdoise);
+  $('#audio').bind('ended', passeALOperationSuivante);
 
   centre($ardoise)
   ecritOperationSurArdoise(multiplicateur);
@@ -38,7 +38,7 @@ $(document).on('ready', function() {
   ecritScore();
 });
 
-function operationSuivante() {
+function choisiNouvelleOperation() {
   var multiplicateurCourant = multiplicateur;
   while(multiplicateur == multiplicateurCourant) {
     multiplicateur = Math.ceil(Math.random()*10);
@@ -79,11 +79,12 @@ function ecritScore() {
 
 function cEstBon() {
   document.getElementById('audio').play();
+  // à la fin de la lecture de l'ardoise, on passe à l'oppération suivante
 }
 
-function finLectureArdoise() {
+function passeALOperationSuivante() {
   var $ardoise = $('#ardoise');
-  operationSuivante();
+  choisiNouvelleOperation();
   proposition="";
   score += 1;
   ecritScore();
