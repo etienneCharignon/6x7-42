@@ -23,13 +23,14 @@ $(document).on('ready', function() {
 
   $('#score').on('click', function() {
     score = 20;
-    boucle({keyCode:999});
+    boucle();
   });
 
   var $ardoise = $('#ardoise');
-  $ardoise.on('click', function(e) {
-      litArdoise(function() { boucle(e); });
-  });
+  $ardoise.on('click', cEstBon);
+
+  $('#audio').bind('ended', finLectureArdoise);
+
   centre($ardoise)
   ecritOperationSurArdoise(multiplicateur);
   ecritResultatSurArdoise(table * multiplicateur);
@@ -46,16 +47,16 @@ function operationSuivante() {
 
 function ecritOperationSurArdoise(multiplicateur) {
   $('#operation').text(table + "x" + multiplicateur + "=");
+  $("#audio").attr('src', multiplicateur + '.mp3');
   $('#resultat').text("");
 }
 
 function ecritResultatSurArdoise(resultat){
-  $("#audio").attr('src', multiplicateur + '.mp3');
   $('#resultat').text(resultat);
 }
 
 function deplace(ardoise) {
-  if(score > 9) {
+  if(score > 9 && score < 20) {
     var anciennePosition = ardoise.css('top');
     while(ardoise.css('top') == anciennePosition) {
       ardoise.css('top', Math.random() * 80 + "%");
@@ -76,16 +77,19 @@ function ecritScore() {
   $('#score').text(score);
 }
 
-function litArdoise(cb) {
-  var audio = $("#audio");
-  audio.unbind('ended');
-  audio.bind('ended', function() {
-    operationSuivante();
-    score += 1;
-    cb();
-    ecritScore();
-  });
+function cEstBon() {
   document.getElementById('audio').play();
+}
+
+function finLectureArdoise() {
+  var $ardoise = $('#ardoise');
+  operationSuivante();
+  proposition="";
+  score += 1;
+  ecritScore();
+  centre($ardoise)
+  boucle();
+  deplace($ardoise);
 }
 
 function litClavier(e) {
@@ -100,12 +104,10 @@ function boucle(e) {
 
   var ardoise = $('#ardoise');
 
-  centre(ardoise)
   ecritOperationSurArdoise(multiplicateur);
 
   if(score < 20) {
     ecritResultatSurArdoise(table * multiplicateur);
-    deplace(ardoise);
     litClavier(e);
     if(!(table*multiplicateur).toString().startsWith(proposition)) {
       proposition = "";
@@ -121,17 +123,11 @@ function boucle(e) {
 }
 
 function controle() {
-  var cEstBon = verifiResultat();
-  if(cEstBon || proposition.length >= 2) {
-    if(cEstBon){
-      litArdoise(function() {
-        proposition="";
-        boucle();
-      });
-    }
-    else {
-        proposition="";
-    }
+  if(verifiResultat()) {
+    cEstBon();
+  }
+  if (proposition.length >= 2){
+    proposition="";
   }
 }
 
