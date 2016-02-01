@@ -21,17 +21,16 @@ $(document).on('ready', function() {
 
   window.onkeypress=boucle;
 
-  $('#score').on('click', function() {
+  afficheurScore.onclick = function() {
     score = 20;
     passeALOperationSuivante();
-  });
+  };
 
-  var $ardoise = $('#ardoise');
-  $ardoise.on('click', cEstBon);
+  ardoise.onclick = cEstBon;
 
   $('#audio').bind('ended', passeALOperationSuivante);
 
-  centre($ardoise)
+  centreArdoise()
   ecritOperationSurArdoise(multiplicateur);
   ecritResultatSurArdoise(table * multiplicateur);
 
@@ -46,26 +45,26 @@ function choisiNouvelleOperation() {
 }
 
 function ecritOperationSurArdoise(multiplicateur) {
-  $('#operation').text(table + "x" + multiplicateur + "=");
-  $("#audio").attr('src', multiplicateur + '.mp3');
-  $('#resultat').text("");
+  operation.innerHTML = table + "x" + multiplicateur + "=";
+  document.getElementById('audio').src = multiplicateur + '.mp3';
+  resultat.innerHTML = "";
 }
 
-function ecritResultatSurArdoise(resultat){
-  $('#resultat').text(resultat);
+function ecritResultatSurArdoise(text){
+  resultat.innerHTML = text;
 }
 
-function deplace(ardoise) {
+function deplaceArdoise() {
   if(score > 9 && score < 20) {
-    var anciennePosition = ardoise.css('top');
-    while(ardoise.css('top') == anciennePosition) {
-      ardoise.css('top', Math.random() * 80 + "%");
+    var anciennePosition = ardoise.style.top;
+    while(ardoise.style.top == anciennePosition) {
+      ardoise.style.top = Math.random() * 80 + '%';
     }
   }
 }
 
-function centre($ardoise) {
-  $ardoise.css('top', '40%');
+function centreArdoise() {
+  ardoise.style.top = '40%';
 }
 
 function pourcentage(score) {
@@ -73,8 +72,8 @@ function pourcentage(score) {
 }
 
 function ecritScore() {
-  $('#tableau').css('background-color', "rgba(255, 255, 255, "+ pourcentage(score) +")");
-  $('#score').text(score);
+  tableau.style.backgroundColor = 'rgba(255, 255, 255, '+ pourcentage(score) +')';
+  afficheurScore.innerHTML = score;
 }
 
 function cEstBon() {
@@ -83,14 +82,13 @@ function cEstBon() {
 }
 
 function passeALOperationSuivante() {
-  var $ardoise = $('#ardoise');
   choisiNouvelleOperation();
   proposition="";
   score += 1;
   ecritScore();
-  centre($ardoise)
+  centreArdoise()
   boucle();
-  deplace($ardoise);
+  deplaceArdoise();
 }
 
 function litClavier(e) {
@@ -103,8 +101,6 @@ function litClavier(e) {
 
 function boucle(e) {
 
-  var ardoise = $('#ardoise');
-
   ecritOperationSurArdoise(multiplicateur);
 
   if(score < 20) {
@@ -115,8 +111,9 @@ function boucle(e) {
     }
   }
   else {
-    $('#resultat').css('color', "black");
-    ardoise.unbind('click');
+    resultat.style.color = "black";
+
+    ardoise.onclick = undefined;
     litClavier(e);
     ecritResultatSurArdoise(proposition);
   }
