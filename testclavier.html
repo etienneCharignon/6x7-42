@@ -1,0 +1,10 @@
+<script src="jquery.min.js"></script>
+<script src="clavier.js"></script>
+<script>
+$(document).on('keypress', function(e) {
+  console.log(e.keyCode);
+});
+installeClavier(function(chiffre) {
+  console.log(chiffre);
+});
+</script>
