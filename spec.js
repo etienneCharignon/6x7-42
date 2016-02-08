@@ -1,48 +1,70 @@
-describe('controle', function(){
-  it("Devrait incrémenter le score si la proposition est bonne et proposer une nouvelle opération", function(){
-    score = 1;
-    multiplicateur = 1;
-    proposition = "7";
-
-    controle();
-
-    expect(score).toBe(2);
-    expect(multiplicateur).not.toBe(1);
-  });
-  it("Devrait afficher le resultat tapé après le score 20", function() {
-    score=19;
-    proposition = "";
-    multiplicateur = 1;
-
-    boucle({keyCode : 55});
-    expect(proposition).toBe("7");
-    expect(score).toBe(19);
-    boucle({keyCode : 13});
-    expect(proposition).toBe("");
-    expect(score).toBe(20);
-  });
-});
-
-describe('apprendre', function() {
-  it("Devrait faire bouger l'ardoise après le score 10", function() {
-    $(document.body).append("<div id='ardoise'></div>");
-    var ardoise = $('#ardoise');
-    score = 9;
-    ardoise.css('top', "40%");
-    boucle();
-    expect(ardoise.css('top')).toBe('40%');
-
-    score = 10;
-    ardoise.css('top', "40%");
-    boucle();
-    expect(ardoise.css('top')).not.toBe('40%');
+describe('Le jeu', function() {
+  beforeEach(function() {
+    spyOn(window, 'cEstBon');
   });
 
-});
+  describe("en mode apprentissage", function() {
+    it("fait bouger l'ardoise après le score 10", function() {
+      $(document.body).append("<div id='ardoise'></div>");
+      var ardoise = $('#ardoise');
+      score = 8;
+      ardoise.css('top', "40%");
+      passeALOperationSuivante();
+      expect(ardoise.css('top')).toBe('40%');
 
-describe('score', function() {
-  it("Devrait afficher un fond de plus en plus rouge quand le score augmente", function() {
-    expect(pourcentage(0)).toBe(1);
-    expect(pourcentage(30)).toBe(0);
+      score = 9;
+      ardoise.css('top', "40%");
+      passeALOperationSuivante();
+      expect(ardoise.css('top')).not.toBe('40%');
+    });
+
+    it("change d'opération quand on clique sur l'ardoise", function() {
+      clicArdoise();
+      expect(window.cEstBon).toHaveBeenCalled();
+    });
+  });
+
+  describe('en mode examen', function(){
+    beforeEach(function() {
+      score = 20;
+    });
+
+    it("quand on clique sur l'ardoise, reste sur l'opération en cours", function() {
+      clicArdoise();
+      expect(window.cEstBon).not.toHaveBeenCalled();
+    });
+
+    it("si la proposition est bonne, incrémente le score et propose une nouvelle opération", function(){
+      multiplicateur = 1;
+      proposition = "7";
+
+      controle();
+
+      expect(window.cEstBon).toHaveBeenCalled();
+
+      passeALOperationSuivante();
+
+      expect(score).toBe(21);
+      expect(multiplicateur).not.toBe(1);
+    });
+
+    it("affiche le résultat tapé", function() {
+      proposition = "";
+      multiplicateur = 2;
+
+      entreeChiffre('1');
+      expect(proposition).toBe("1");
+      expect(score).toBe(20);
+      entreeChiffre('4');
+      expect(proposition).toBe("");
+      expect(score).toBe(20);
+    });
+  });
+
+  describe('score', function() {
+    it("Devrait afficher un fond de plus en plus rouge quand le score augmente", function() {
+      expect(opacite(0)).toBe(1);
+      expect(opacite(30)).toBe(0);
+    });
   });
 });
