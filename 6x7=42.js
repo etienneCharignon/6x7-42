@@ -15,7 +15,7 @@ function ecritOperationSurArdoise(multiplicateur) {
   $('#resultat').text("");
 }
 
-function ecritResultatSurArdoise(resultat){
+function ecrisSurArdoise(resultat){
   $('#resultat').text(resultat);
 }
 
@@ -66,15 +66,20 @@ function boucle() {
   ecritOperationSurArdoise(multiplicateur);
 
   if(modeApprentissage()) {
-    ecritResultatSurArdoise(resultatAttendu());
+    ecrisSurArdoise(resultatAttendu());
     if(!resultatAttendu().toString().startsWith(proposition)) {
       proposition = "";
     }
   } else {
     $('#resultat').css('color', "black");
-    ecritResultatSurArdoise(proposition);
+    ecrisSurArdoise(proposition);
   }
-  controle();
+  if(proposition == resultatAttendu()) {
+    cEstBon();
+  }
+  if (proposition.length >= 2){
+    proposition="";
+  }
 }
 
 function cEstBon() {
@@ -88,13 +93,4 @@ function clicArdoise() {
 
 function resultatAttendu() {
   return table*multiplicateur;
-}
-
-function controle() {
-  if(proposition == resultatAttendu()) {
-    cEstBon();
-  }
-  if (proposition.length >= 2){
-    proposition="";
-  }
 }

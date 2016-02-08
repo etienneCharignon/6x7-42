@@ -38,7 +38,7 @@ describe('Le jeu', function() {
       multiplicateur = 1;
       proposition = "7";
 
-      controle();
+      boucle();
 
       expect(window.cEstBon).toHaveBeenCalled();
 
