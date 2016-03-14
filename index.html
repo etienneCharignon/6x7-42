@@ -13,32 +13,32 @@
       </div>
     </div>
     <audio id="audio"></audio>
+    <script src="clavier.js"></script>
+    <script>
+       $(function() {
+         // fonction de tricheur
+         $('#score').on('click', function() {
+           score = 19;
+           passeALOperationSuivante();
+         });
+
+         // installe la souris
+         $('#ardoise').on('click', clicArdoise);
+
+         // installe le clavier
+         installeClavier(entreeChiffre);
+
+         // installe le son
+         window.cEstBon = function() {
+           $("#audio")
+             .attr('src', multiplicateur + '.mp3')
+             .one('ended', passeALOperationSuivante)
+             .each(function() { this.play(); });
+         }
+
+         // démarre le jeu
+         passeALOperationSuivante();
+       });
+     </script>
   </body>
-  <script src="clavier.js"></script>
-  <script>
-    $(function() {
-      // fonction de tricheur
-      $('#score').on('click', function() {
-        score = 19;
-        passeALOperationSuivante();
-      });
-
-      // installe la souris
-      $('#ardoise').on('click', clicArdoise);
-
-      // installe le clavier
-      installeClavier(entreeChiffre);
-
-      // installe le son
-      window.cEstBon = function() {
-        $("#audio")
-          .attr('src', multiplicateur + '.mp3')
-          .one('ended', passeALOperationSuivante)
-          .each(function() { this.play(); });
-      }
-
-      // démarre le jeu
-      passeALOperationSuivante();
-    });
-  </script>
 </html>
