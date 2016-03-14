@@ -16,5 +16,6 @@ function installeClavier(callback) {
     if(e && e.charCode && e.charCode in keyNumberMap) {
       callback(keyNumberMap[e.charCode]);
     }
+    e.preventDefault();
   });
 }
