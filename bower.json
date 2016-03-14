@@ -11,6 +11,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "jquery": "~2.2.0"
+    "jquery": "~1.12.1"
   }
 }
