@@ -13,8 +13,8 @@ function installeClavier(callback) {
       231:9, 57: 9
     };
 
-    if(e && e.keyCode && e.keyCode in keyNumberMap) {
-      callback(keyNumberMap[e.keyCode]);
+    if(e && e.charCode && e.charCode in keyNumberMap) {
+      callback(keyNumberMap[e.charCode]);
     }
   });
 }
